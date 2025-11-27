@@ -1,0 +1,19 @@
+{
+    "id": 1,
+    "modelo": "KNN",
+    "performance_validacao": {
+        "val_rmse": 76316.56677063795,
+        "val_r2": -0.047307335411474805,
+        "val_mae": 22587.04284085183
+    },
+    "hiperparametros": {
+        "algorithm": "auto",
+        "leaf_size": 30,
+        "metric": "minkowski",
+        "metric_params": null,
+        "n_jobs": null,
+        "n_neighbors": 5,
+        "p": 2,
+        "weights": "uniform"
+    }
+}
