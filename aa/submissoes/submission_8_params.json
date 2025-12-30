@@ -1,0 +1,24 @@
+{
+    "id": 7,
+    "modelo": "KNN",
+    "performance_validacao": {
+        "modelo": "KNN",
+        "train_rmse": 0.47008543460834346,
+        "train_r2": 0.6895399121142618,
+        "train_mae": 0.3335300605756686,
+        "val_rmse": 0.5182561918222995,
+        "val_r2": 0.6248662064034458,
+        "val_mae": 0.3670665643825498,
+        "modelo_treinado": "KNeighborsRegressor(n_neighbors=11, p=1)"
+    },
+    "hiperparametros": {
+        "algorithm": "auto",
+        "leaf_size": 30,
+        "metric": "minkowski",
+        "metric_params": null,
+        "n_jobs": null,
+        "n_neighbors": 11,
+        "p": 1,
+        "weights": "uniform"
+    }
+}
