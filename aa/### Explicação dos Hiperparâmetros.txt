@@ -1,0 +1,93 @@
+### Explicação dos Hiperparâmetros por Modelo
+
+#### 1. Regressão Linear (Linear Regression)
+A Regressão Linear tenta encontrar a melhor linha reta que minimiza a diferença quadrática entre os valores reais e as previsões.
+
+* **`fit_intercept` [True, False]**:
+    * **Porquê estes valores?** Determina se o modelo deve calcular o ponto onde a reta cruza o eixo Y. Na quase totalidade dos casos práticos, os dados não passam pela origem $(0,0)$, pelo que `True` é o padrão. Testa-se `False` apenas se os dados já tiverem sido centralizados.
+    * **Como se encaixa:** Controla a flexibilidade vertical da reta de regressão.
+
+* **`positive` [True, False]**:
+    * **Porquê estes valores?** Força todos os coeficientes a serem maiores ou iguais a zero.
+    * **Como se encaixa:** É uma restrição física ou de negócio. Se soubermos que as variáveis independentes apenas podem contribuir positivamente para o resultado, ativar esta opção evita coeficientes negativos espúrios causados por ruído.
+
+---
+
+#### 2. KNN (K-Nearest Neighbors)
+O KNN baseia as suas previsões na média dos valores dos $K$ pontos mais próximos no espaço de características.
+
+* **`n_neighbors` [3, 5, 7, 11]**:
+    * **Porquê estes valores?** Valores ímpares são usados para evitar empates. Começamos com um valor baixo (3) para capturar padrões locais e subimos até 11 para suavizar a previsão e reduzir a sensibilidade a *outliers*.
+    * **Como se encaixa:** Controla o equilíbrio entre viés e variância. $K$ pequeno pode levar a *overfitting*; $K$ grande pode levar a *underfitting*.
+
+* **`weights` ['uniform', 'distance']**:
+    * **Porquê estes valores?** 'Uniform' dá o mesmo peso a todos os vizinhos. 'Distance' dá mais importância aos vizinhos que estão realmente mais perto.
+    * **Como se encaixa:** Permite que o modelo seja mais refinado, dando mais "voto" a quem está geograficamente mais próximo do ponto a prever.
+
+* **`p` [1, 2]**:
+    * **Como se encaixa:** Define a métrica de distância. $p=1$ é a distância de Manhattan (movimentos em grelha); $p=2$ é a Euclidiana (distância em linha reta). A escolha depende da escala e da relação entre as variáveis.
+
+
+---
+
+#### 3. Árvore de Decisão (Decision Tree)
+Divide os dados em ramificações baseadas em regras lógicas de "maior que" ou "menor que".
+
+* **`max_depth` [5, 10, 20, None]**:
+    * **Porquê estes valores?** Limitamos a profundidade para evitar que a árvore cresça infinitamente e decore o ruído dos dados. `None` permite o crescimento total, servindo como ponto de comparação.
+    * **Como se encaixa:** É o principal controlador de complexidade. Árvores muito profundas são propensas a *overfitting*.
+
+* **`min_samples_split` [2, 5, 10]** e **`min_samples_leaf` [1, 2, 4]**:
+    * **Porquê estes valores?** Impedem a criação de nós ou folhas com pouquíssimas amostras. 
+    * **Como se encaixa:** Funcionam como regularizadores. Forçam a árvore a basear as suas decisões em grupos de dados estatisticamente mais significativos.
+
+* **`criterion` ['squared_error', 'absolute_error']**:
+    * **Como se encaixa:** Define a função de perda. O `squared_error` foca-se na média, enquanto o `absolute_error` foca-se na mediana, sendo este último muito mais robusto contra dados que contenham valores aberrantes (*outliers*).
+
+
+---
+
+#### 4. Random Forest
+Um modelo de *ensemble* que cria centenas de árvores independentes e faz a média dos seus resultados.
+
+* **`n_estimators` [100, 200, 300]**:
+    * **Porquê estes valores?** 100 é a base recomendada. Aumentar para 300 ajuda a estabilizar a variância do modelo, embora aumente o tempo de treino.
+    * **Como se encaixa:** Mais árvores geralmente significam um modelo mais robusto, até se atingir um ponto de retorno decrescente onde o tempo de processamento não compensa o ganho de precisão.
+
+* **Parâmetros de Árvore (`max_depth`, etc.)**:
+    * Seguem a mesma lógica da Árvore de Decisão, mas como o Random Forest usa amostragem aleatória, podemos permitir árvores ligeiramente mais complexas do que no modelo individual.
+
+---
+
+#### 5. XGBoost
+Um modelo de *Gradient Boosting* onde as árvores são construídas sequencialmente para corrigir os erros das anteriores.
+
+* **`learning_rate` [0.01, 0.05, 0.1]**:
+    * **Como se encaixa:** Controla o impacto de cada nova árvore. Um valor baixo (0.01) significa que o modelo aprende lentamente, o que requer mais árvores mas resulta numa generalização muito superior.
+* **`n_estimators` [100, 500, 1000]**:
+    * **Porquê estes valores?** Como as árvores no XGBoost são "aprendizes fracos", precisamos de muitas iterações (especialmente com um `learning_rate` baixo) para convergir para uma boa solução.
+* **`subsample`** e **`colsample_bytree` [0.7, 0.9, 1.0]**:
+    * **Como se encaixa:** Introduzem aleatoriedade ao usar apenas uma fração dos dados ou das colunas em cada passo. Isto impede que o modelo fique "viciado" em certas características e ajuda imenso a prevenir o *overfitting*.
+
+---
+
+#### 6. SVR Linear (Support Vector Regression)
+Procura um hiperplano que mantenha o máximo de pontos dentro de uma margem de erro permitida ($\epsilon$).
+
+* **`C` [0.1, 1, 10, 100]**:
+    * **Como se encaixa:** É o parâmetro de penalização. Um `C` baixo prioriza uma margem larga e um modelo simples. Um `C` alto penaliza severamente qualquer erro, tentando ajustar-se perfeitamente aos dados de treino.
+* **`epsilon` [0.01, 0.1, 0.5]**:
+    * **Porquê estes valores?** Define o "tubo" de tolerância. Se o erro for menor que $\epsilon$, o modelo ignora-o. Valores como 0.5 tornam o modelo muito mais tolerante a ruído.
+
+
+---
+
+#### 7. MLP (Multi-Layer Perceptron)
+Uma rede neural que aprende representações complexas através de camadas de neurónios.
+
+* **`hidden_layer_sizes` [(50,50,50), (100,50), (100,)]**:
+    * **Porquê estes valores?** Testamos três arquiteturas: uma profunda com três camadas `(50,50,50)`, uma piramidal `(100,50)` e uma simples `(100,)`. Isto permite avaliar se o problema é linearmente separável ou se exige abstrações profundas.
+* **`activation` ['tanh', 'relu']**:
+    * **Como se encaixa:** `relu` é a mais eficiente computacionalmente; `tanh` pode ser útil em dados normalizados para capturar curvaturas mais suaves.
+* **`alpha` [0.0001, 0.05]**:
+    * **Como se encaixa:** Parâmetro de regularização L2 (weight decay). Valores como 0.05 ajudam a "encolher" os pesos da rede, evitando que neurónios específicos dominem a previsão e causem instabilidade.
