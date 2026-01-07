@@ -1,0 +1,17 @@
+{
+    "id": 15,
+    "modelo": "Linear Regression",
+    "performance_validacao": {
+        "modelo": "Linear Regression",
+        "train_rmse": 0.5379259124434106,
+        "val_rmse": 0.542653498743504,
+        "modelo_treinado": "LinearRegression(fit_intercept=False)"
+    },
+    "hiperparametros": {
+        "copy_X": true,
+        "fit_intercept": false,
+        "n_jobs": null,
+        "positive": false,
+        "tol": 1e-06
+    }
+}
