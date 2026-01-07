@@ -1,0 +1,20 @@
+{
+    "id": 20,
+    "modelo": "KNN",
+    "performance_validacao": {
+        "modelo": "KNN",
+        "train_rmse": 0.4698559295506952,
+        "val_rmse": 0.5176821478063652,
+        "modelo_treinado": "KNeighborsRegressor(n_neighbors=11, p=1)"
+    },
+    "hiperparametros": {
+        "algorithm": "auto",
+        "leaf_size": 30,
+        "metric": "minkowski",
+        "metric_params": null,
+        "n_jobs": null,
+        "n_neighbors": 11,
+        "p": 1,
+        "weights": "uniform"
+    }
+}

@@ -1,0 +1,2 @@
+id_submissao,ficheiro_submissao,Algoritmo,Treino RMSE,Validação RMSE,hiperparametros
+27,submission_27.csv,Linear Regression,0.5379259124434106,0.5426534987435042,"{'copy_X': True, 'fit_intercept': False, 'n_jobs': -1, 'positive': False, 'tol': 1e-06}"
